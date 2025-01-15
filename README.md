@@ -1,4 +1,4 @@
-# ecampuscdd.github.io-Video-Embed-Tool
+# Video-Embed-Tool
 Here is the eCampus Center Video Embed Tool
 
 This program was set up originally by Chas and has been updated and edited throughout the years. Todd has copied the original work and created a new repository. 
