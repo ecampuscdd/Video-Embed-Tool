@@ -1,4 +1,7 @@
-# Video-Embed-Tool
+# Video-Embed-Tool-Branch 
+This is the first branch to add buttons that will generate text to copy to the computers clipboard to be pasted into the Blueprint or Canvas Course
+
+***************************************************
 Here is the eCampus Center Video Embed Tool
 
 This program was set up originally by Chas and has been updated and edited throughout the years. Todd has copied the original work and created a new repository. 
