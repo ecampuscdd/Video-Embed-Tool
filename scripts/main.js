@@ -32,7 +32,7 @@ mainForm.onsubmit = function () {
     getEmbedCode(videoID);
 	document.getElementById("forCourse").addEventListener("click", getTextForCourse);
 	document.getElementById("forBlueprint").addEventListener("click", getTextForBlueprint);
-
+	
   } catch (e) {
     console.error("Error:", e.message);
     $("div.preview").html(`<p>${e.message}</p>`);
@@ -83,9 +83,9 @@ function getIDFromLink(link) {
 function getTextForCourse(){
    // Copy the text inside the text field
   navigator.clipboard.writeText(textForCanvas);
-
+  
   // Alert the copied text
-  alert("Text copied for Canvas: " + textForCanvas);
+  //alert("Text copied for Canvas: " + textForCanvas);
 }
 async function getTextForBlueprint() {
 	console.log(textForBlueprint);
@@ -93,13 +93,13 @@ async function getTextForBlueprint() {
   try {
     // Create a Blob containing the HTML content
     const blob = new Blob([textForBlueprint], { type: "text/html" });
-
+	
     // Create a ClipboardItem with the Blob
     const clipboardItem = new ClipboardItem({ "text/html": blob });
-
+	
     // Write the ClipboardItem to the clipboard
     await navigator.clipboard.write([clipboardItem]);
-
+	
     console.log("Rich text copied to clipboard!");
   } catch (err) {
     console.error("Failed to copy rich text: ", err);
@@ -129,7 +129,6 @@ async function getEmbedCode(id) {
 		let channelTitle = data.items[0].snippet.channelTitle; // Get channel title
 
 		let transcriptOption = '';
-		console.log(transcriptLink.value);
 		for (i = 0; i < radioInfo.length; i++) {
 			if (radioInfo[i].checked){
 				radioValue = radioInfo[i].value;
@@ -142,7 +141,7 @@ async function getEmbedCode(id) {
 		transcriptOption = `<p>Use the direct link to open the video in YouTube to display and expand the video. For a transcript, refer to the <a class="inline_disabled" href="${transcriptLink.value}" target="_blank" rel="noopener">${title} document</a>. </p>`;
 		textForBlueprint = `<p><strong><font color="red">Transcript Link: <a class="inline_disabled" href="${transcriptLink.value}" target="_blank" rel="noopener">${title}</a> transcript</strong> </p>`;
 		document.getElementById("forBlueprint").style.display = "inherit";
-
+		console.log(transcriptLink.value);
 	  }else if(radioValue == "Ordered"){
 		transcriptOption = `<p>Use the direct link to open the video in YouTube to display and expand the video. For a transcript, refer to the ${title} document. </p>`;
 	  }else if(radioValue == "No"){
@@ -150,7 +149,7 @@ async function getEmbedCode(id) {
 		<p><strong>Note:</strong> Please contact your instructor if you require a detailed transcript of audio/video content.</p>`;
 	  }
       // Use the retrieved data to create the embed code 
-      let embedCode = `<h3>Video: "${title}"</h3><p>
+	  let embedCode = `<h3>Video: "${title}"</h3><p>
 	  <iframe name="videoIframe" id="videoPlayeriFrame" width="560" height="315" src="https://www.youtube.com/embed/${videoID}${videoTimeEmbed}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	  </p><p>If the video doesn't appear, follow this direct link: <a class="inline_disabled" href="https://youtu.be/${videoID}${videoTimeLink}" target="_blank" rel="noopener">${title}</a> (${duration})</p>${transcriptOption}<p>Video uploaded: ${uploadDate} by ${channelTitle}.</p>`;
       textArea.value = embedCode;
@@ -158,8 +157,8 @@ async function getEmbedCode(id) {
 	  
 	  textForCanvas = embedCode;
 	document.getElementById("forCourse").style.display = "inherit";
-
-	  
+	
+	
 } catch (error) {
     console.error("Error fetching video details:", error.message);
     $("div.preview").html(`<p>${error.message}</p>`);
