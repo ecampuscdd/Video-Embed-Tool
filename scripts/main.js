@@ -13,6 +13,7 @@ let videoTimeLink = '';
 const URL = 'https://www.googleapis.com/youtube/v3/videos';
 let accessToken = ''; // Store the access token
 let tokenExpiration = 0; // Store token expiration time
+let bluePrintCodeBlob = [];
 
 // --- Helper Functions ---
 function getIDFromLink(docLink) {
@@ -54,6 +55,43 @@ function formatDate(isoDate) {
         year: 'numeric',
     };
     return date.toLocaleDateString('en-US', options);
+}
+
+function copyBluePrint(){
+	if (document.getElementById('embedCode')) {
+		navigator.clipboard.write(bluePrintCodeBlob).then(
+			() => {
+			  alert('Content copied as rich text!');
+			},
+			(err) => {
+			  console.error('Failed to copy as rich text: ', err);
+			  alert('Failed to copy rich text.');
+			}
+		);
+	}
+}
+
+function clearAll(){
+	document.getElementById('videoLink').value = '';
+	document.getElementById('RadioOrdered').checked = true;   
+	document.getElementById('transcriptLink').value = '';
+	document.getElementById('transcriptLineDiv').style.display = 'none';
+	document.getElementById('getBlueprint').style.display = 'none';
+	document.getElementById('copyEmbedCode').style.display = 'none';
+	document.getElementById('clearAll').style.display = 'none';
+	document.getElementById('embedCode').value = '';
+	document.getElementById('previewWindow').innerHTML = '';
+}
+
+function copyCode(){
+	let embedCodeTextarea = document.getElementById('embedCode');
+
+	if (embedCodeTextarea) {
+		embedCodeTextarea.select();
+		document.execCommand('copy');
+		window.getSelection().removeAllRanges(); // Deselect the text
+		alert('Embed code copied to clipboard!'); // Optional feedback
+    }
 }
 
 function showError(errorMessage, place) {
@@ -158,7 +196,16 @@ async function getEmbedCode() {
             </p><p>If the video doesn't appear, follow this direct link: <a class="inline_disabled" href="https://youtu.be/$$${id}${videoTimeLink}" target="_blank" rel="noopener">${title}</a> (${duration})</p>${transcriptOption}<p>Video uploaded: ${uploadDate} by ${channelTitle}.</p>`;
         document.getElementById('embedCode').value = embedCode;
         $('div.preview').html(`<hr>` + embedCode);
+
+		let bluePrintCode = `<p style="color: red; font-weight: bold;"> [Transcript Link: <a class="inline_disabled" href="${document.getElementById('transcriptLink').value}" target="_blank" rel="noopener">${title} document</a>. ]</p>`;
+		const blob = new Blob([bluePrintCode], { type: 'text/html' });
+		bluePrintCodeBlob = [new ClipboardItem({ 'text/html': blob })];
+		
+		document.getElementById('copyEmbedCode').style.display = 'inline-block'; // Or 'block'
+		document.getElementById('getBlueprint').style.display = 'inline-block'; // Or 'block'
+		document.getElementById('clearAll').style.display = 'inline-block'; // Or 'block'
     } catch (error) {
         showError(error.message);
     }
 }
+
