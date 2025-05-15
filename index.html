@@ -1,72 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Embed Tool</title>
-  <link href="styles/style.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://apis.google.com/js/api.js"></script>
-  <script type="text/javascript">
-	function showThis (ShowWhat, onOff) {
-		document.getElementById(ShowWhat).style.display = onOff;
-	}
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouTube Embed Tool 3.0</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link href="styles/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script type="text/javascript">
+        function showThis(ShowWhat, onOff) {
+            document.getElementById(ShowWhat).style.display = onOff;
+        }
+    </script>
 </head>
 <body>
-  <div class="content">
-    <h1>YouTube Embed Tool</h1>
-    <form id="mainForm">
-		<div id="videoLinkDiv" class="flexline">
-			<label for="videoLink" >YouTube Video URL:</label>
-			<input class="input_text" style="justify-content:right;"type="text" id="videoLink">
-		</div>
-		<div id="transcriptStatusDiv" class="flexline" >
-			<div class="inlineLeft">
-				<span id="questions">Trascript Status:</span>
-			</div>	
-			<div class="flexline" style="width:516px;">
-				<div class="" style="width:235px;">
-					<input type="radio" id="RadioOrdered" name="transcriptAvailable" value="Ordered" aria-expanded="true" onClick="showThis('transcriptLineDiv', 'none');" checked>
-					<label for="RadioOrdered" class="transcriptWords">Ordered, but not yet available</label>
-					<br>
-					<input type="radio" id="RadioCaptions" name="transcriptAvailable" value="hasCaptions" onClick="showThis('transcriptLineDiv', 'none');" >
-					<label for="RadioCaptions" class="transcriptWords">This video has captions</label>
-				</div>
-				<div class="" style="width:225px;">
-					<input type="radio" id="RadioTranscript" name="transcriptAvailable" value="HaveLink" onClick="showThis('transcriptLineDiv', 'flex');">
-					<label for="RadioTranscript" class="transcriptWords">I have a transcript link</label>
-					<br>
-					<input type="radio" id="RadioNotComing" name="transcriptAvailable" value="No" onClick="showThis('transcriptLineDiv', 'none');">
-					<label for="RadioNotComing" class="transcriptWords">No transcript coming</label>
-				</div>
-			</div>
-		</div>
-		<div id="transcriptLineDiv" class="flexline" style="display:none;" >
-			<label for="transcriptLink" >Transcript URL:</label>
-			<input class="input_text" style="justify-content:right;"type="text" id="transcriptLink">
-		</div>
-		<div id="submitButtonLine" class="flexline" style="justify-content:center;">
-		<br>
-			<div class="buttonStuff" >
-				<button id="submit" class="button_label bigButton" type="submit" >Get Embed Code</button>
-			</div>
-		</div>
-    </form>
-	<div id="embedCodeDiv" class="flexline">
-		<div style="width:175px">
-			<label for="embedCode" >Embed Code:</label>
-			<button class="" id="getBlueprint" style="display:none;">Copy for Blueprint</button>
-		</div>
-		<div>
-			<textarea rows="10" id="embedCode"></textarea>
-		</div>
+    <div class="content">
+        <h1>YouTube Embed Tool</h1>
+            <div id="videoLinkDiv" class="flexline">
+                <label for="videoLink">YouTube Video URL:</label>
+                <input class="input_text" style="justify-content:right;" type="text" id="videoLink">
+            </div>
+            <div id="transcriptStatusDiv" class="flexline">
+                <div class="inlineLeft">
+                    <span id="questions">Transcript Status:</span>
+                </div>
+                <div class="flexline" style="width:516px;">
+                    <div class="" style="width:235px;">
+                        <input type="radio" id="RadioOrdered" name="transcriptAvailable" value="Ordered"
+                               aria-expanded="true" onclick="showThis('transcriptLineDiv', 'none');" checked>
+                        <label for="RadioOrdered" class="transcriptWords">Ordered, but not yet available</label>
+                        <br>
+                        <input type="radio" id="RadioCaptions" name="transcriptAvailable" value="hasCaptions"
+                               onclick="showThis('transcriptLineDiv', 'none');">
+                        <label for="RadioCaptions" class="transcriptWords">This video has captions</label>
+                    </div>
+                    <div class="" style="width:225px;">
+                        <input type="radio" id="RadioTranscript" name="transcriptAvailable" value="HaveLink"
+                               onclick="showThis('transcriptLineDiv', 'flex');">
+                        <label for="RadioTranscript" class="transcriptWords">I have a transcript link</label>
+                        <br>
+                        <input type="radio" id="RadioNotComing" name="transcriptAvailable" value="No"
+                               onclick="showThis('transcriptLineDiv', 'none');">
+                        <label for="RadioNotComing" class="transcriptWords">No transcript coming</label>
+                    </div>
+                </div>
+            </div>
+            <div id="transcriptLineDiv" class="flexline" style="display:none;">
+                <label for="transcriptLink">Transcript URL:</label>
+                <input class="input_text" style="justify-content:right;" type="text" id="transcriptLink">
+            </div>
+            <div id="submitButtonLine" class="flexline" style="justify-content:center;">
+                <br>
+                <div class="buttonStuff">
+					<button id="submit" class="button_label bigButton" type="button" onclick="handleAuthClick()">Get Embed Code</button>
+                </div>
+            </div>
+        <div id="embedCodeDiv" class="flexline">
+            <div style="width:175px">
+                <label for="embedCode">Embed Code:</label>
+                <button class="" id="getBlueprint" style="display:none;">Copy for Blueprint</button>
+            </div>
+            <div>
+                <textarea rows="10" id="embedCode"></textarea>
+            </div>
+        </div>
+        <h2>Preview</h2>
+        <div id="previewWindow" class="preview"></div>
     </div>
-	<h2>Preview</h2>
-    <div id="previewWindow" class="preview"></div>
-  </div>
-  <script src="scripts/config.js"></script>
-  <script src="scripts/main.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>
