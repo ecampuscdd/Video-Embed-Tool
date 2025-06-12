@@ -192,7 +192,7 @@ async function getEmbedCode() {
         }
 
         let embedCode = `<h3>Video: "${title}"</h3><p>
-            <iframe name="videoIframe" id="videoPlayeriFrame" width="560" height="315" src="https://www.youtube.com/embed/$$${id}${videoTimeEmbed}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe name="videoIframe" id="videoPlayeriFrame" width="560" height="315" src="https://www.youtube.com/embed/$$${id[1]}${videoTimeEmbed}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </p><p>If the video doesn't appear, follow this direct link: <a class="inline_disabled" href="https://youtu.be/$$${id}${videoTimeLink}" target="_blank" rel="noopener">${title}</a> (${duration})</p>${transcriptOption}<p>Video uploaded: ${uploadDate} by ${channelTitle}.</p>`;
         document.getElementById('embedCode').value = embedCode;
         $('div.preview').html(`<hr>` + embedCode);
