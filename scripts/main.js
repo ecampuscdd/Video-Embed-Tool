@@ -8,8 +8,6 @@
 		*	Errors can be submitted to Todd.
 */
 
-let videoTimeEmbed = '';
-let videoTimeLink = '';
 const URL = 'https://www.googleapis.com/youtube/v3/videos';
 let accessToken = ''; // Store the access token
 let tokenExpiration = 0; // Store token expiration time
@@ -144,16 +142,17 @@ function handleAuthClick() {
 async function getEmbedCode() {
     let params, id;
 	try{
-		id = getIDFromLink(document.getElementById('videoLink').value);
+		id = getIDFromLink(document.getElementById('videoLink').value); //checks the link and returns an array of options, [1] and [2] are the video id and timestamp
+
 		
 		//check if id or accessToken is null or undefined
-		if (!id) throw new Error("No URL provided.");
+		if (!id[1]) throw new Error("No URL provided.");
 		if (!accessToken) throw new Error("Access token is missing.");
     
         params = new URLSearchParams({
             part: 'snippet,contentDetails',
             access_token: accessToken,
-            id: id,
+            id: id[1],
         });
 
         const response = await fetch(`${URL}?${params}`);
@@ -171,12 +170,6 @@ async function getEmbedCode() {
         let transcriptOption = '';
 		let radioValue = getSelectedRadioValue();
 		console.log("Selected Transcript Option:", radioValue);
-		
-        for (let i = 0; i < document.getElementsByName('transcriptAvailable').length; i++) {
-            if (document.getElementsByName('transcriptAvailable')[i].checked) {
-                radioValue = document.getElementsByName('transcriptAvailable')[i].value;
-            }
-        }
 
         if (radioValue == 'hasCaptions') {
             transcriptOption =
@@ -191,10 +184,21 @@ async function getEmbedCode() {
             <p><strong>Note:</strong> Please contact your instructor if you require a detailed transcript of audio/video content.</p>`;
         }
 
+        // Construct the base YouTube URL for embedding and direct links
+        const youtubeEmbedBase = `https://www.youtube.com/embed/${id[1]}`;
+        const youtubeWatchBase = `https://www.youtube.com/watch?v=${id[1]}`;
+
+        // Add timestamp if available
+        const embedUrl = id[2] ? `${youtubeEmbedBase}?start=${id[2]}` : youtubeEmbedBase;
+        const watchUrl = id[2] ? `${youtubeWatchBase}&t=${id[2]}s` : youtubeWatchBase;
+		
+		console.log("embedUrl:" + embedUrl + "\nwatchUrl:" + watchUrl + "\nid[1]:" + id[1] + "\nid[2]:" + id[2]);
+
         let embedCode = `<h3>Video: "${title}"</h3><p>
-            <iframe name="videoIframe" id="videoPlayeriFrame" width="560" height="315" src="https://www.youtube.com/embed/${id[1]}${videoTimeLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </p><p>If the video doesn't appear, follow this direct link: <a class="inline_disabled" href="https://youtu.be/${id}${videoTimeLink}" target="_blank" rel="noopener">${title}</a> (${duration})</p>${transcriptOption}<p>Video uploaded: ${uploadDate} by ${channelTitle}.</p>`;
-        document.getElementById('embedCode').value = embedCode;
+            <iframe name="videoIframe" id="videoPlayeriFrame" width="560" height="315" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </p><p>If the video doesn't appear, follow this direct link: <a class="inline_disabled" href="${watchUrl}" target="_blank" rel="noopener">${title}</a> (${duration})</p>${transcriptOption}<p>Video uploaded: ${uploadDate} by ${channelTitle}.</p>`;
+
+		document.getElementById('embedCode').value = embedCode;
         $('div.preview').html(`<hr>` + embedCode);
 
 		let bluePrintCode = `<p style="color: red; font-weight: bold;"> [Transcript Link: <a class="inline_disabled" href="${document.getElementById('transcriptLink').value}" target="_blank" rel="noopener">${title} document</a>. ]</p>`;
@@ -208,4 +212,3 @@ async function getEmbedCode() {
         showError(error.message);
     }
 }
-
