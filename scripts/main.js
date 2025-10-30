@@ -16,8 +16,7 @@ let bluePrintCodeBlob = [];
 // --- Helper Functions ---
 function getIDFromLink(docLink) {
     try {
-        let linkPattern =
-            /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:shorts\/|[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:.*t=([0-9]+))?/;
+        let linkPattern = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:shorts\/|[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:.*t=([0-9]+))?/;
         return linkPattern.exec(docLink);
     } catch (error) {
         showError(error.message, 'getIDFromLink');
