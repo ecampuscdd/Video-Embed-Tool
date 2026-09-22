@@ -180,7 +180,7 @@ async function getEmbedCode() {
         } else if (radioValue == 'No') {
             transcriptOption =
                 `<p>Use the direct link to open the video in YouTube to display and expand the video.</p>
-            <p><strong>Note:</strong> Please contact your instructor if you require a detailed transcript of audio/video content.</p>`;
+            <p><strong>Note:</strong> Please contact me if you need a detailed transcript of this content.</p>`;
         }
 
         // Construct the base YouTube URL for embedding and direct links
